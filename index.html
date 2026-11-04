@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f4f6f2">
+  <title>Chat with Gemma · Local AI</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <main class="shell">
+    <header class="topbar">
+      <a class="brand" href="/" aria-label="Local AI home"><span class="brand-mark">L</span><span><small>LOCAL AI</small><strong>Chat with Gemma</strong></span></a>
+      <span class="local-pill"><i></i> Runs on this computer</span>
+    </header>
+    <nav class="tabs" aria-label="Main navigation">
+      <button class="tab active" data-view="chat">Chat</button>
+      <button class="tab" data-view="documents">Document collection <span class="count" id="nav-count">0</span></button>
+    </nav>
+    <section id="chat-view" class="view">
+      <div class="chat-heading"><div><h1>Chat with Gemma</h1><p>A private conversation with your local Ollama model.</p></div><button id="clear-chat" class="quiet-button" type="button">New chat</button></div>
+      <div id="conversation" class="conversation" aria-live="polite" aria-label="Conversation">
+        <div class="empty-state"><div class="spark">✳</div><p>Ask Gemma anything to get started.</p><span>Your uploaded documents can help answer questions, too.</span></div>
+      </div>
+      <form id="chat-form" class="composer">
+        <label class="sr-only" for="message">Message Gemma</label>
+        <textarea id="message" rows="1" placeholder="Message Gemma…" required></textarea>
+        <button id="send" class="send-button" type="submit"><span>Send</span><span class="send-arrow">↑</span></button>
+      </form>
+      <div class="chat-footer"><span>Using {{ model }} · Runs on this computer</span><span id="chat-status" role="status"></span></div>
+    </section>
+    <section id="documents-view" class="view hidden">
+      <div class="chat-heading"><div><h1>Document collection</h1><p>Upload and manage files for your conversations.</p></div></div>
+      <div class="upload-card">
+        <div><h2>Add documents</h2><p>PDF, TXT, or Markdown · Maximum file size: 50 MB</p></div>
+        <form id="upload-form" class="upload-form"><label class="file-picker"><input id="file" name="file" type="file" accept=".pdf,.txt,.md,application/pdf,text/plain,text/markdown"><span class="file-label">Choose a file</span><span id="file-name" class="file-name">No file chosen</span></label><button class="send-button upload-button" type="submit">Upload</button></form>
+        <div id="upload-status" role="status" class="upload-status"></div>
+      </div>
+      <div class="files-heading"><h2>Your files</h2><span id="file-total">0 files</span></div>
+      <ul id="file-list" class="file-list"></ul>
+      <div id="no-files" class="no-files">No files yet. Upload a document to start your collection.</div>
+      <p class="privacy-note">Files stay in this app’s local documents folder and are sent only to your local Ollama model as relevant context.</p>
+    </section>
+  </main>
+  <script src="{{ url_for('static', filename='app.js') }}" defer></script>
+</body>
+</html>
