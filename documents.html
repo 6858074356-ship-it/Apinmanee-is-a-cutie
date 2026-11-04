@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Document collection · Local AI</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <main class="page documents-page">
+    <header>
+      <div class="eyebrow">Local AI</div>
+      <h1>Document collection</h1>
+      <p class="subtitle">Upload and manage the files you want to keep in your collection.</p>
+      <nav class="tabs" aria-label="Main navigation">
+        <a href="{{ url_for('index') }}">Chat</a>
+        <a class="active" href="{{ url_for('documents') }}">Document collection</a>
+      </nav>
+    </header>
+
+    <section class="documents-card" aria-label="Document collection">
+      <div class="section-head"><h2>Add documents</h2><span>Up to {{ max_mb }} MB per file</span></div>
+      <form class="upload-box" action="{{ url_for('upload_document') }}" method="post" enctype="multipart/form-data">
+        <p>Choose a document to keep in your collection</p>
+        <div class="upload-row">
+          <input id="file" name="file" type="file" accept=".pdf,.txt,.md,.docx" required aria-label="Choose a document">
+          <button class="btn" type="submit">Upload</button>
+        </div>
+      </form>
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}<div class="notices" role="status">{% for category, message in messages %}<p class="notice {{ category }}">{{ message }}</p>{% endfor %}</div>{% endif %}
+      {% endwith %}
+
+      <div class="section-head"><h2>Your files</h2><span>{{ files|length }} {{ 'file' if files|length == 1 else 'files' }}</span></div>
+      {% if files %}
+      <ul class="file-list">{% for file in files %}
+        <li>
+          <div>
+            <div class="file-name">{{ file.name }}</div>
+            <div class="file-size">{% if file.size < 1024 %}{{ file.size }} bytes{% else %}{{ (file.size / 1024)|round(1) }} KB{% endif %}</div>
+          </div>
+          <form action="{{ url_for('delete_document', filename=file.name) }}" method="post" onsubmit="return confirm('Delete this file from your collection?')">
+            <button class="btn-delete" type="submit">Delete</button>
+          </form>
+        </li>
+      {% endfor %}</ul>
+      {% else %}<p class="empty-files">No files yet. Upload a document to start your collection.</p>{% endif %}
+      <p class="note">Files stay in this app's local uploads folder. Text from your documents is indexed locally and relevant excerpts are sent to Gemma with each question. Scanned PDFs without selectable text cannot be indexed.</p>
+    </section>
+    <footer class="footer">Made for your own corner of the internet.</footer>
+  </main>
+</body>
+</html>
