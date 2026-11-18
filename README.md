@@ -1,3 +1,9 @@
+# Current group project: LocalBite
+
+The LocalBite app and collected local guides are in [`LocalBite/`](LocalBite/). Follow its README for setup and use. The root-level files below are the earlier local chat prototype and are retained from the original repository.
+
+---
+
 # Local AI: Chat with Gemma
 
 A small local web app that sends chat requests from Flask to the Ollama API on this computer. It includes a document collection page for uploading and removing local files, plus local text extraction and retrieval so chat can answer from relevant document passages and link to the source file.
